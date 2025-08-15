@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rohitha Chowdary — Portfolio</title>
+  <meta name="description" content="Portfolio of Rohitha Chowdary — projects, skills, and contact" />
+  <style>
+    /* ------------------------
+       Base + Theme
+    -------------------------*/
+    :root {
+      --bg: #0b1020;
+      --bg-2: #11162a;
+      --text: #e6e9f2;
+      --muted: #b9c0d6;
+      --brand: #7c5cff;
+      --brand-2: #00e3a9;
+      --card: #0f1530;
+      --stroke: rgba(255,255,255,0.08);
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      --radius: 16px;
+      --blur: 10px;
+      --transition: 300ms cubic-bezier(.2,.8,.2,1);
+    }
+    
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f6f8ff;
+        --bg-2: #eef2ff;
+        --text: #0e1222;
+        --muted: #4b556a;
+        --card: #ffffff;
+        --stroke: rgba(0,0,0,0.08);
+        --shadow: 0 10px 30px rgba(20, 28, 60, 0.08);
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: radial-gradient(1000px 600px at 10% -5%, rgba(124,92,255,0.18), transparent 60%),
+                  radial-gradient(800px 500px at 110% 10%, rgba(0,227,169,0.14), transparent 60%),
+                  linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+      min-height: 100svh;
+      overflow-x: hidden;
+    }
+
+    .container { width: min(1100px, 92%); margin-inline: auto; }
+
+    /* ------------------------
+       Fancy Background Orbs
+    -------------------------*/
+    .orbs {
+      position: fixed; inset: -10vh -10vw; pointer-events: none; z-index: -1; filter: blur(60px);
+      opacity: .75;
+    }
+    .orb { position: absolute; border-radius: 999px; mix-blend-mode: screen; }
+    .orb.a { width: 480px; height: 480px; background: radial-gradient(circle at 30% 30%, #7c5cff, transparent 60%); left: -6vw; top: 10vh; }
+    .orb.b { width: 520px; height: 520px; background: radial-gradient(circle at 60% 50%, #00e3a9, transparent 55%); right: -8vw; top: 30vh; }
+    .orb.c { width: 380px; height: 380px; background: radial-gradient(circle at 50% 50%, #ff7cb0, transparent 45%); left: 30vw; bottom: -10vh; opacity: .6; }
+
+    /* ------------------------
+       Header / Nav
+    -------------------------*/
+    header {
+      position: sticky; top: 0; z-index: 50; backdrop-filter: saturate(140%) blur(var(--blur));
+      background: linear-gradient(180deg, rgba(10, 14, 28, .75), rgba(10, 14, 28, .35));
+      border-bottom: 1px solid var(--stroke);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
+    .brand { font-weight: 800; letter-spacing: .5px; display: flex; align-items: center; gap: 10px; }
+    .brand-logo { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow: var(--shadow); display: grid; place-items: center; color: white; font-size: 16px; }
+    nav a { color: var(--muted); text-decoration: none; margin-left: 18px; font-weight: 600; position: relative; }
+    nav a:focus-visible { outline: 2px solid var(--brand); outline-offset: 4px; border-radius: 6px; }
+    nav a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: -6px; height: 2px; background: linear-gradient(90deg, var(--brand), var(--brand-2)); transition: right var(--transition); border-radius: 2px; }
+    nav a:hover::after, nav a[aria-current="page"]::after { right: 0; }
+
+    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 999px; border: 1px solid var(--stroke); background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); color: var(--text); text-decoration: none; font-weight: 700; box-shadow: var(--shadow); transition: transform var(--transition), box-shadow var(--transition), background var(--transition); }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(0,0,0,.25); }
+
+    /* Theme toggle */
+    .toggle {
+      inline-size: 46px; block-size: 28px; border-radius: 999px; border: 1px solid var(--stroke);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      position: relative; cursor: pointer; display: inline-grid; place-items: center; margin-left: 10px;
+    }
+    .toggle i { position: absolute; inset: 4px; width: 20px; height: 20px; border-radius: 999px; background: linear-gradient(135deg, var(--brand), var(--brand-2)); transition: transform var(--transition); }
+    body.light .toggle i { transform: translateX(18px); }
+
+    /* ------------------------
+       Hero
+    -------------------------*/
+    .hero { padding: 80px 0 40px; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 26px; align-items: center; }
+    .hero h1 { font-size: clamp(28px, 3.4vw, 54px); line-height: 1.05; margin: 0 0 12px; letter-spacing: 0.2px; }
+    .highlight {
+      background: linear-gradient(90deg, var(--brand) 0%, var(--brand-2) 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .hero p { color: var(--muted); font-size: clamp(14px, 1.35vw, 18px); margin: 0 0 20px; }
+    .hero-card { border: 1px solid var(--stroke); border-radius: var(--radius); padding: 16px; background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); box-shadow: var(--shadow); }
+    .hero-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .stat { border: 1px solid var(--stroke); border-radius: 14px; padding: 14px; background: rgba(255,255,255,0.04); backdrop-filter: blur(6px); text-align: center; }
+    .stat b { display: block; font-size: 22px; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .tag { padding: 6px 10px; border-radius: 999px; border: 1px solid var(--stroke); font-weight: 700; font-size: 12px; opacity: .95; background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); }
+
+    /* ------------------------
+       Sections
+    -------------------------*/
+    section { padding: 80px 0; position: relative; }
+    .section-title { font-size: clamp(20px, 2vw, 28px); margin: 0 0 18px; letter-spacing: .3px; }
+    .section-sub { color: var(--muted); margin: 0 0 28px; }
+
+    /* Projects */
+    .projects { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+    .card {
+      grid-column: span 6; border: 1px solid var(--stroke); border-radius: var(--radius); overflow: clip;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      box-shadow: var(--shadow); position: relative; isolation: isolate; transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(0,0,0,.28); }
+    .thumb { aspect-ratio: 16/9; background: linear-gradient(135deg, rgba(124,92,255,.25), rgba(0,227,169,.25)); display: grid; place-items: center; }
+    .thumb svg { width: 60px; opacity: .9; }
+    .card-body { padding: 16px; }
+    .card h3 { margin: 0 0 8px; font-size: 18px; }
+    .card p { margin: 0 0 14px; color: var(--muted); }
+    .pill { display: inline-block; padding: 6px 10px; border: 1px solid var(--stroke); border-radius: 999px; font-weight: 700; font-size: 12px; margin-right: 8px; }
+
+    /* Skills */
+    .skills { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+    .skill { border: 1px solid var(--stroke); border-radius: 12px; padding: 12px; background: rgba(255,255,255,0.04); display: flex; align-items: center; gap: 10px; font-weight: 700; }
+
+    /* About */
+    .about { display: grid; grid-template-columns: 1.2fr .8fr; gap: 24px; align-items: center; }
+    .about .photo { border: 1px solid var(--stroke); border-radius: 16px; padding: 8px; background: linear-gradient(135deg, rgba(124,92,255,.14), rgba(0,227,169,.14)); aspect-ratio: 4/3; display: grid; place-items: center; }
+
+    /* Contact */
+    form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    label { font-size: 12px; color: var(--muted); display: block; margin-bottom: 6px; }
+    input, textarea {
+      width: 100%; padding: 12px 12px; border-radius: 12px; border: 1px solid var(--stroke);
+      background: rgba(255,255,255,0.06); color: var(--text); font: inherit; transition: border var(--transition), box-shadow var(--transition);
+    }
+    textarea { min-height: 120px; grid-column: 1 / -1; resize: vertical; }
+    input:focus, textarea:focus { outline: none; border-color: color-mix(in oklab, var(--brand) 70%, transparent); box-shadow: 0 0 0 4px rgba(124,92,255,.15); }
+
+    .contact-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
+
+    /* Footer */
+    footer { padding: 40px 0 80px; color: var(--muted); text-align: center; border-top: 1px solid var(--stroke); background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0)); }
+
+    /* ------------------------
+       Motion + Effects
+    -------------------------*/
+    .reveal { opacity: 0; transform: translateY(16px) scale(.98); filter: blur(4px); }
+    .reveal.in { opacity: 1; transform: none; filter: none; transition: opacity 700ms cubic-bezier(.2,.8,.2,1), transform 700ms cubic-bezier(.2,.8,.2,1), filter 700ms cubic-bezier(.2,.8,.2,1); }
+
+    .page-veil { position: fixed; inset: 0; background: radial-gradient(1200px 800px at 20% -20%, rgba(124,92,255,.25), transparent 60%),
+                                         radial-gradient(1000px 700px at 120% -10%, rgba(0,227,169,.22), transparent 60%),
+                                         var(--bg);
+                 transform: translateY(100%); z-index: 100; pointer-events: none; transition: transform 650ms cubic-bezier(.2,.8,.2,1); }
+    .page-veil.active { transform: translateY(0); }
+
+    /* ------------------------
+       Responsive
+    -------------------------*/
+    @media (max-width: 960px) {
+      .hero, .about { grid-template-columns: 1fr; }
+      .projects .card { grid-column: span 12; }
+      .skills { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      nav { display: none; }
+      .skills { grid-template-columns: repeat(2, 1fr); }
+      .hero { padding-top: 56px; }
+      form { grid-template-columns: 1fr; }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal, .reveal.in { transition: none !important; transform: none !important; opacity: 1 !important; filter: none !important; }
+      .page-veil { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Decorative background orbs -->
+  <div class="orbs" aria-hidden="true">
+    <div class="orb a"></div>
+    <div class="orb b"></div>
+    <div class="orb c"></div>
+  </div>
+
+  <div class="page-veil" id="veil" aria-hidden="true"></div>
+
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <span class="brand-logo" aria-hidden="true">RC</span>
+        <span>Rohitha&nbsp;Chowdary</span>
+      </div>
+      <nav aria-label="Primary">
+        <a href="#about" data-nav>About</a>
+        <a href="#projects" data-nav>Projects</a>
+        <a href="#skills" data-nav>Skills</a>
+        <a href="#contact" data-nav>Contact</a>
+        <span class="toggle" role="switch" aria-checked="false" title="Toggle theme" id="themeToggle"><i></i></span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero -->
+    <section class="hero">
+      <div>
+        <h1 class="reveal">Hi, I'm <span class="highlight">Rohitha&nbsp;Chowdary</span> — building delightful, performant web experiences.</h1>
+        <p class="reveal" style="transition-delay:120ms">Front‑end developer focused on accessibility, micro‑interactions, and clean, modern UI. I craft single‑page apps and polished microsites.</p>
+        <div class="reveal" style="transition-delay:220ms">
+          <a class="btn" href="#projects" data-nav>
+            <!-- inline icon -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            View Projects
+          </a>
+          <a class="btn" href="#contact" data-nav style="margin-left:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="2"/></svg>
+            Contact
+          </a>
+        </div>
+        <div class="tag-row reveal" style="transition-delay:320ms">
+          <span class="tag">HTML</span>
+          <span class="tag">CSS</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">React</span>
+          <span class="tag">GSAP</span>
+          <span class="tag">Node</span>
+        </div>
+      </div>
+      <div class="hero-card reveal" style="transition-delay:220ms">
+        <div class="hero-grid">
+          <div class="stat"><b>5+ </b><small>Projects</small></div>
+          <div class="stat"><b>5 ⭐</b><small>Client Rating</small></div>
+          <div class="stat"><b>1 yrs</b><small>Experience</small></div>
+          <div class="stat"><b>100%</b><small>On‑time Delivery</small></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+      <h2 class="section-title reveal">About</h2>
+      <p class="section-sub reveal" style="transition-delay:120ms">I turn ideas into elegant, interactive websites with smooth transitions and zero rough edges. My focus: performance, accessibility, and maintainable code.</p>
+      <div class="about">
+        <div class="reveal" style="transition-delay:180ms">
+          <p>I love building immersive UI with subtle motion and real attention to detail — from meaningful hover states to satisfying page transitions. I also ship reliable forms, robust validation, and semantic HTML for great SEO.</p>
+          <p>When I’m not coding, I explore design systems and micro‑animation patterns to keep interfaces feeling alive without being distracting.</p>
+          <div class="contact-row">
+            <a class="btn" href="#contact" data-nav>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="2"/></svg>
+              Hire Me
+            </a>
+            <a class="btn" href="#projects" data-nav>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              Latest Work
+            </a>
+          </div>
+        </div>
+        <div class="photo reveal" style="transition-delay:240ms" aria-label="Profile placeholder">
+          <svg width="96" height="96" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects">
+      <h2 class="section-title reveal">Featured Projects</h2>
+      <p class="section-sub reveal" style="transition-delay:120ms">A selection of work with delightful transitions and first‑class UX.</p>
+      <div class="projects">
+        <article class="card reveal" style="transition-delay:160ms">
+          <div class="thumb" aria-label="Project thumbnail">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18v14H3z" stroke="currentColor" stroke-width="1.6"/><path d="M3 9h18" stroke="currentColor" stroke-width="1.6"/><circle cx="7" cy="6.5" r=".9" fill="currentColor"/><circle cx="10" cy="6.5" r=".9" fill="currentColor"/><circle cx="13" cy="6.5" r=".9" fill="currentColor"/></svg>
+          </div>
+          <div class="card-body">
+            <h3>Motion Portfolio</h3>
+            <p>Single‑file portfolio with smooth page transitions, reveal‑on‑scroll, and themed UI. Fully accessible and fast.</p>
+            <span class="pill">HTML</span><span class="pill">CSS</span><span class="pill">JS</span>
+          </div>
+        </article>
+        <article class="card reveal" style="transition-delay:220ms">
+          <div class="thumb" aria-label="Project thumbnail">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z" stroke="currentColor" stroke-width="1.6"/><path d="M4 9h16M8 13h8M8 17h6" stroke="currentColor" stroke-width="1.6"/></svg>
+          </div>
+          <div class="card-body">
+            <h3>Shop Micro‑Interactions</h3>
+            <p>E‑commerce UI kit with buttery hover/tap states, cart flyouts, and accessible keyboard flows.</p>
+            <span class="pill">React</span><span class="pill">GSAP</span><span class="pill">A11y</span>
+          </div>
+        </article>
+        <article class="card reveal" style="transition-delay:260ms">
+          <div class="thumb" aria-label="Project thumbnail">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 6h20v12H2z" stroke="currentColor" stroke-width="1.6"/><path d="M2 10h20M6 14h6" stroke="currentColor" stroke-width="1.6"/></svg>
+          </div>
+          <div class="card-body">
+            <h3>Docs Site</h3>
+            <p>Lightning‑fast docs with instant section transitions and search‑as‑you‑type.</p>
+            <span class="pill">Vite</span><span class="pill">SPA</span><span class="pill">ARIA</span>
+          </div>
+        </article>
+        <article class="card reveal" style="transition-delay:300ms">
+          <div class="thumb" aria-label="Project thumbnail">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14l2 4v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8l2-4z" stroke="currentColor" stroke-width="1.6"/><path d="M3 8h18M7 12h10" stroke="currentColor" stroke-width="1.6"/></svg>
+          </div>
+          <div class="card-body">
+            <h3>Booking Flow</h3>
+            <p>End‑to‑end booking prototype with animated steps and robust form validation.</p>
+            <span class="pill">Forms</span><span class="pill">Validation</span><span class="pill">UX</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills">
+      <h2 class="section-title reveal">Skills</h2>
+      <p class="section-sub reveal" style="transition-delay:120ms">Strong foundation with modern tooling and a11y best practices.</p>
+      <div class="skills">
+        <div class="skill reveal"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18v16H3z" stroke="currentColor"/></svg> Semantic HTML</div>
+        <div class="skill reveal" style="transition-delay:60ms"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V4h16" stroke="currentColor"/></svg> Modern CSS</div>
+        <div class="skill reveal" style="transition-delay:120ms"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18" stroke="currentColor"/></svg> JavaScript</div>
+        <div class="skill reveal" style="transition-delay:180ms"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor"/></svg> React</div>
+        <div class="skill reveal" style="transition-delay:240ms"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14" stroke="currentColor"/></svg> GSAP / Motion</div>
+        <div class="skill reveal" style="transition-delay:300ms"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 10h10M4 14h14M4 18h8" stroke="currentColor"/></svg> Accessibility</div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <h2 class="section-title reveal">Contact</h2>
+      <p class="section-sub reveal" style="transition-delay:120ms">Let's collaborate. I’m currently open to freelance and full‑time opportunities.</p>
+      <form class="reveal" style="transition-delay:180ms" onsubmit="submitContact(event)">
+        <div>
+          <label for="name">Name</label>
+          <input id="name" name="name" autocomplete="name" required />
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required />
+        </div>
+        <div style="grid-column: 1/-1">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" required></textarea>
+        </div>
+        <div style="grid-column: 1/-1; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <button class="btn" type="submit">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12l6 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Send
+          </button>
+          <a class="btn" href="mailto:hello@rohitha.dev?subject=Project%20Inquiry%20—%20Rohitha%20Chowdary" title="Email directly">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="2"/></svg>
+            Email Me
+          </a>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">© <span id="year"></span> Rohitha Chowdary · Built with love and clean code ✨</div>
+  </footer>
+
+  <script>
+    // ----------------------------
+    // Utilities
+    // ----------------------------
+    const $ = (sel, root=document) => root.querySelector(sel);
+    const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+    // Year
+    $('#year').textContent = new Date().getFullYear();
+
+    // Theme toggle (persist to localStorage)
+    const toggle = $('#themeToggle');
+    const applyTheme = (mode) => {
+      if (mode === 'light') document.body.classList.add('light');
+      else document.body.classList.remove('light');
+      toggle?.setAttribute('aria-checked', mode === 'light');
+      localStorage.setItem('theme', mode);
+    };
+    const saved = localStorage.getItem('theme');
+    if (saved) applyTheme(saved);
+    toggle?.addEventListener('click', () => {
+      const next = document.body.classList.contains('light') ? 'dark' : 'light';
+      applyTheme(next);
+    });
+
+    // Smooth section nav with page transition veil
+    const veil = $('#veil');
+    const navigateWithVeil = (hash) => {
+      if (!hash) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        location.hash = hash; return;
+      }
+      veil.classList.add('active');
+      setTimeout(() => {
+        location.hash = hash;
+        requestAnimationFrame(() => veil.classList.remove('active'));
+      }, 320);
+    };
+    $$('a[data-nav]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const url = new URL(a.href);
+        if (url.hash) { e.preventDefault(); navigateWithVeil(url.hash); }
+      });
+    });
+
+    // Reveal on scroll using IntersectionObserver
+    const revealEls = $$('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) if (e.isIntersecting) e.target.classList.add('in');
+    }, { threshold: 0.12, rootMargin: '20px' });
+    revealEls.forEach(el => io.observe(el));
+
+    // Contact form (client‑side validation + mailto fallback)
+    function submitContact(ev) {
+      ev.preventDefault();
+      const data = Object.fromEntries(new FormData(ev.target));
+      const ok = data.name?.trim() && /.+@.+\..+/.test(data.email) && data.message?.trim();
+      if (!ok) { alert('Please complete all fields with a valid email.'); return; }
+      const subject = encodeURIComponent('Portfolio Inquiry — Rohitha Chowdary');
+      const body = encodeURIComponent(`Name: ${data.name}\nEmail: ${data.email}\n\n${data.message}`);
+      location.href = `mailto:hello@rohitha.dev?subject=${subject}&body=${body}`;
+    }
+
+    // Accessibility: keep aria-current on nav while scrolling
+    const sections = ['about','projects','skills','contact'].map(id => ({ id, el: document.getElementById(id) }));
+    const navLinks = $$('nav a[data-nav]');
+    const spy = new IntersectionObserver((entries) => {
+      const visible = entries.filter(e => e.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visible) return;
+      const id = visible.target.id;
+      navLinks.forEach(a => a.setAttribute('aria-current', a.getAttribute('href') === '#' + id ? 'page' : 'false'));
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: [0, .2, .4, .6, .8, 1] });
+    sections.forEach(s => spy.observe(s.el));
+
+    // Subtle floating animation for orbs
+    const lerp = (a,b,t)=>a+(b-a)*t; let t=0, dir=1; function tick(){ t+=0.005*dir; if(t>1||t<0) dir*=-1; const y = lerp(-10, 10, t); $$('.orb').forEach((o,i)=>o.style.transform = `translateY(${y*(i+1)*.4}px)`); requestAnimationFrame(tick);} tick();
+  </script>
+</body>
+</html>
